@@ -263,7 +263,8 @@ void irremote_cmd() {
     } else if (IrReceiver.decodedIRData.command == 0x15) {
       // + speed
       update_motor_speed(step_speed);
-    } else if (IrReceiver.decodedIRData.command == 0x7) {  // - speed
+    } else if (IrReceiver.decodedIRData.command == 0x7) {
+      // - speed
       update_motor_speed(-step_speed);
     };
   };
@@ -301,7 +302,7 @@ void softserial_cmd() {
 bool speed_detection() {
   time = millis();
   if (abs(time - old_time) >= 1000) {
-    detachInterrupt(0);  // 关闭外部中断
+    detachInterrupt(0);  
     detachInterrupt(1);
     lv = (float)leftCounter * 60 / 20;
     rv = (float)rightCounter * 60 / 20;
@@ -405,8 +406,5 @@ void loop() {
 
     // Send the JSON document over the "link" serial port
     serializeJson(doc, espSerial);
-    serializeJson(doc, Serial);
-    // espSerial.println(out_json);
-    // Serial.println(out_json);
   }
 }
