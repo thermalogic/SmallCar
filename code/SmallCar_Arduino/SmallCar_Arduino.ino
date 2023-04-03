@@ -78,7 +78,7 @@ float distance;
 // send data to esp8266
 const int interval_send_data = 10;
 long previousMillis_send_data; 
-String out_json;
+StaticJsonDocument<200> sensor_json;  
 
 // 74HC595N
 void shift_register_update()
@@ -463,10 +463,9 @@ void loop()
   if (currentMillis - previousMillis_send_data >= interval_send_data)
   {
     previousMillis_send_data = currentMillis; 
-    StaticJsonDocument<200> doc;  
-    doc["distance"] = String(distance, 2);
-    doc["left_speed"] = String(lv, 2);
-    doc["right_speed"] = String(rv, 2);
-    serializeJson(doc, espSerial);
+    sensor_json["distance"] = String(distance, 2);
+    sensor_json["left_speed"] = String(lv, 2);
+    sensor_json["right_speed"] = String(rv, 2);
+    serializeJson(sensor_json, espSerial);
   }
 }
