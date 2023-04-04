@@ -139,7 +139,7 @@ void motor_turn_left()
 {
   // right speed>left speed
   left_speed = right_speed - turn_speed_diff;
-  if (left_speed < SPEED_MIN)
+  if (left_speed < 0)
   {
     left_speed = 0;
   };
@@ -159,7 +159,7 @@ void motor_turn_right()
   bitSet(values, 7 - MOTOR_LEFT_FORWARD_PIN_SR);
   bitClear(values, 7 - MOTOR_LEFT_BACK_PIN_SR);
   right_speed = left_speed - turn_speed_diff;
-  if (right_speed < SPEED_MIN)
+  if (right_speed < 0)
   {
     right_speed = 0;
   }
