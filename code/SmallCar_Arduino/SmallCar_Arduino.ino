@@ -47,7 +47,7 @@ int motor_cmd = MOTOR_STOP;
 int step_speed = 10;
 int left_speed = 130;
 int right_speed = 135;
-int turn_speed_diff = 30;
+int turn_speed_diff = 60;
 
 long previousMillis_blink; // for led blink
 const int interval_blink = 200;
