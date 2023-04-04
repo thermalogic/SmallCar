@@ -3,7 +3,7 @@
 #include <SoftwareSerial.h>
 #include <ArduinoJson.h>
 
-#define CONFIG_DISTANCE_DEBUG
+// #define CONFIG_DISTANCE_DEBUG
 // #define CONFIG_SPEED_DEBUG
 // #define CONFIG_IRREMOTE_DEBUG
 // #define CONFIG_SOFTSERIAL_DEBUG
