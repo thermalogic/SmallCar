@@ -1,8 +1,11 @@
+/*
+  Small Car
+       by Cheng Maohua
+*/
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ArduinoJson.h>
 
-/* Set these to your desired credentials. */
 const char *ssid = "ESP8266-WIFI";
 const char *password = "12345678";
 

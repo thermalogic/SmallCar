@@ -1,4 +1,8 @@
-#include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
+/*
+  Small Car
+       by Cheng Maohua
+*/
+#include "PinDefinitionsAndMore.h"
 #include <IRremote.hpp>
 #include <SoftwareSerial.h>
 #include <ArduinoJson.h>
@@ -8,27 +12,27 @@
 // #define CONFIG_IRREMOTE_DEBUG
 // #define CONFIG_SOFTSERIAL_DEBUG
 
-#define DECODE_NEC // Includes Apple and Onkyo
+#define DECODE_NEC
 #define IR_RECEIVE_PIN 7
 
-#define LATCH_PIN 13 // Latch pin of 74HC595 is connected to Digital pin 13
-#define CLOCK_PIN 4  // Clock pin of 74HC595 is connected to Digital pin 4
-#define DATA_PIN 12  // Data pin of 74HC595 is connected to Digital pin 12
+#define LATCH_PIN 13
+#define CLOCK_PIN 4
+#define DATA_PIN 12
 
 byte values = 0; // Variable to hold the pattern of which pins are currently turned HIGH or LOW
 
-// 74hc595 - motor
+// 74HC595 - motor
 #define MOTOR_LEFT_FORWARD_PIN_SR 4
 #define MOTOR_LEFT_BACK_PIN_SR 3
 #define MOTOR_RIGHT_FORWARD_PIN_SR 1
 #define MOTOR_RIGHT_BACK_PIN_SR 2
-// 74hc595 - led
+// 74HC595 - led
 #define LED_LEFT_PIN_SR 5
 #define LED_RIGHT_PIN_SR 6
-// 74hc595 - buzzer
+// 74HC595 - buzzer
 #define BUZZER_PIN_SR 0
 
-// LN298N - Arduino
+// L298N - Arduino
 #define LEFT_PWM_PIN 6
 #define RIGHT_PWM_PIN 5
 
@@ -112,11 +116,10 @@ void motor_init()
 
 void motor_go()
 {
-  // left forward
   analogWrite(LEFT_PWM_PIN, left_speed);
   bitSet(values, 7 - MOTOR_LEFT_FORWARD_PIN_SR);
   bitClear(values, 7 - MOTOR_LEFT_BACK_PIN_SR);
-  // right forward
+
   analogWrite(RIGHT_PWM_PIN, right_speed);
   bitSet(values, 7 - MOTOR_RIGHT_FORWARD_PIN_SR);
   bitClear(values, 7 - MOTOR_RIGHT_BACK_PIN_SR);
@@ -135,7 +138,7 @@ void motor_back()
 
 void motor_turn_left()
 {
-  // right speed>left speed
+  // right speed > left speed
   left_speed = right_speed - turn_speed_diff;
   if (left_speed < 0)
   {
@@ -152,7 +155,7 @@ void motor_turn_left()
 
 void motor_turn_right()
 {
-  // left speed>right speed
+  // left speed > right speed
   analogWrite(LEFT_PWM_PIN, left_speed);
   bitSet(values, 7 - MOTOR_LEFT_FORWARD_PIN_SR);
   bitClear(values, 7 - MOTOR_LEFT_BACK_PIN_SR);
@@ -229,7 +232,7 @@ void update_motor_speed(int step_speed_value)
   {
     left_speed = SPEED_MIN;
   };
-  // right_speed
+
   if (right_speed > SPEED_MAX)
   {
     right_speed = SPEED_MAX;
@@ -261,7 +264,6 @@ void irremote_cmd()
   if (IrReceiver.decode())
   {
 #ifdef CONFIG_IRREMOTE_DEBUG
-    // Print a short summary of received data
     IrReceiver.printIRResultShort(&Serial);
     if (IrReceiver.decodedIRData.protocol == UNKNOWN)
     {
@@ -270,7 +272,6 @@ void irremote_cmd()
     }
     Serial.println();
 #endif
-    //!!!Important!!! Enable receiving of the next value,
     IrReceiver.resume(); // Enable receiving of the next value
     if (IrReceiver.decodedIRData.command == 0x18)
     {
