@@ -1,5 +1,5 @@
 /*
-  Small Car
+  Small Car: ESP8266-01
        by Cheng Maohua
 */
 #include <ESP8266WiFi.h>

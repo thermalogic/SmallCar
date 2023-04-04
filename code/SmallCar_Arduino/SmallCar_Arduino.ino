@@ -1,5 +1,5 @@
 /*
-  Small Car
+  Small Car: Arduino Pro Mini
        by Cheng Maohua
 */
 #include "PinDefinitionsAndMore.h"
