@@ -89,52 +89,60 @@ function getData() {
 </html>
 )=====";
 
-void handleRoot() {
+void handleRoot()
+{
   String s = webpage;
   server.send(200, "text/html", s);
 }
 
-void handleMotor() {
+void handleMotor()
+{
   String state = "S";
   int motor_cmd = server.arg("state").toInt();
-  switch (motor_cmd) {
-    case MOTOR_GO:
-      state = "G";
-      break;
-    case MOTOR_BACK:
-      state = "B";
-      break;
-    case MOTOR_STOP:
-      state = "S";
-      break;
-    case MOTOR_LEFT:
-      state = "L";
-      break;
-    case MOTOR_RIGHT:
-      state = "R";
-      break;
-    case MOTOR_UP:
-      state = "U";
-      break;
-    case MOTOR_DOWN:
-      state = "D";
-      break;
-    default:
-      break;
+  switch (motor_cmd)
+  {
+  case MOTOR_GO:
+    state = "G";
+    break;
+  case MOTOR_BACK:
+    state = "B";
+    break;
+  case MOTOR_STOP:
+    state = "S";
+    break;
+  case MOTOR_LEFT:
+    state = "L";
+    break;
+  case MOTOR_RIGHT:
+    state = "R";
+    break;
+  case MOTOR_UP:
+    state = "U";
+    break;
+  case MOTOR_DOWN:
+    state = "D";
+    break;
+  default:
+    break;
   }
   Serial.println(state);
   server.send(200, "text/plane", state);
 }
 
-void handleSensor() {
-  if (data_ready) {
+void handleSensor()
+{
+  if (data_ready)
+  {
     server.send(200, "text/json", json);
-  } else {
+  }
+  else
+  {
     server.send(503, "text/plane", "none data");
   }
 }
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
   Serial.println();
   Serial.println("Configuring access point...");
@@ -150,20 +158,26 @@ void setup() {
   Serial.println("HTTP server started");
 }
 
-void loop() {
+void loop()
+{
   server.handleClient();
   data_ready = false;
-  if (Serial.available()) {
+  if (Serial.available())
+  {
     DeserializationError err = deserializeJson(sensor_json, Serial);
-    if (err == DeserializationError::Ok) {
+    if (err == DeserializationError::Ok)
+    {
       json = "{";
       json += "\"distance\":" + sensor_json["distance"].as<String>();
       json += ", \"left_speed\":" + sensor_json["left_speed"].as<String>();
       json += ", \"right_speed\":" + sensor_json["right_speed"].as<String>();
       json += "}";
       data_ready = true;
-    } else {  // Flush all bytes in the "link" serial port buffer
-      while (Serial.available() > 0) {
+    }
+    else
+    { // Flush all bytes in the "link" serial port buffer
+      while (Serial.available() > 0)
+      {
         Serial.read();
       };
     }
