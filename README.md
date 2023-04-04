@@ -15,7 +15,7 @@ The Small Car can be controlled with infrared and WIFI.
   * H206 Optical Interrupter Sensor x2
 * LED: 5mm Yellow x2
 * Resistor: 220Ω x2
-* Buzzer(active) x1*
+* Buzzer(active) x1
 * 2WD Chassis x1 
 * Power: 7.4V 800mAh Lithium Battery x1
 * Mini Breadboard x2
