@@ -2,14 +2,6 @@
 #include <ESP8266WebServer.h>
 #include <ArduinoJson.h>
 
-#define MOTOR_GO 1
-#define MOTOR_STOP 2
-#define MOTOR_BACK 3
-#define MOTOR_LEFT 4
-#define MOTOR_RIGHT 5
-#define MOTOR_UP 6
-#define MOTOR_DOWN 7
-
 /* Set these to your desired credentials. */
 const char *ssid = "ESP8266-WIFI";
 const char *password = "12345678";
@@ -22,7 +14,7 @@ ESP8266WebServer server(80);
 
 StaticJsonDocument<300> sensor_json;
 String json;
-bool data_ready=false;
+bool data_ready = false;
 
 const char webpage[] PROGMEM = R"=====(
 <!DOCTYPE html>
@@ -38,13 +30,13 @@ const char webpage[] PROGMEM = R"=====(
 <title>Small Car</title>
 <body>
 <h1 align=center>Small Car</h1>
-<p><button class="button" onclick="send(1)">Go</button></p>
-<p><button class="button" onclick="send(2)">STOP</button></p>
-<p><button class="button" onclick="send(3)">BACK</button></p>
-<p><button class="button"  onclick="send(4)">Turn Left</button></p>
-<p><button class="button" onclick="send(5)">Turn Right</button></p>
-<p><button class="button" onclick="send(6)">Speed Up</button></p>
-<p><button class="button" onclick="send(7)">Speed Down</button></p>
+<p><button class="button" onclick="send('G')">Go</button></p>
+<p><button class="button" onclick="send('S')">STOP</button></p>
+<p><button class="button" onclick="send('B')">BACK</button></p>
+<p><button class="button"  onclick="send('L')">Turn Left</button></p>
+<p><button class="button" onclick="send('R')">Turn Right</button></p>
+<p><button class="button" onclick="send('U')">Speed Up</button></p>
+<p><button class="button" onclick="send('D')">Speed Down</button></p>
 <div><h2> 
   Distance(cm): <span id="distance_val">0</span><br>
   </h2>
@@ -89,60 +81,26 @@ function getData() {
 </html>
 )=====";
 
-void handleRoot()
-{
+void handleRoot() {
   String s = webpage;
   server.send(200, "text/html", s);
 }
 
-void handleMotor()
-{
-  String state = "S";
-  int motor_cmd = server.arg("state").toInt();
-  switch (motor_cmd)
-  {
-  case MOTOR_GO:
-    state = "G";
-    break;
-  case MOTOR_BACK:
-    state = "B";
-    break;
-  case MOTOR_STOP:
-    state = "S";
-    break;
-  case MOTOR_LEFT:
-    state = "L";
-    break;
-  case MOTOR_RIGHT:
-    state = "R";
-    break;
-  case MOTOR_UP:
-    state = "U";
-    break;
-  case MOTOR_DOWN:
-    state = "D";
-    break;
-  default:
-    break;
-  }
-  Serial.println(state);
-  server.send(200, "text/plane", state);
+void handleMotor() {
+  String motor_cmd = server.arg("state");
+  Serial.println(motor_cmd);
+  server.send(200, "text/plane", motor_cmd);
 }
 
-void handleSensor()
-{
-  if (data_ready)
-  {
+void handleSensor() {
+  if (data_ready) {
     server.send(200, "text/json", json);
-  }
-  else
-  {
+  } else {
     server.send(503, "text/plane", "none data");
   }
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
   Serial.println();
   Serial.println("Configuring access point...");
@@ -158,25 +116,19 @@ void setup()
   Serial.println("HTTP server started");
 }
 
-void loop()
-{
+void loop() {
   server.handleClient();
-  if (Serial.available())
-  {
+  if (Serial.available()) {
     DeserializationError err = deserializeJson(sensor_json, Serial);
-    if (err == DeserializationError::Ok)
-    {
+    if (err == DeserializationError::Ok) {
       json = "{";
       json += "\"distance\":" + sensor_json["distance"].as<String>();
       json += ", \"left_speed\":" + sensor_json["left_speed"].as<String>();
       json += ", \"right_speed\":" + sensor_json["right_speed"].as<String>();
       json += "}";
       data_ready = true;
-    }
-    else
-    { // Flush all bytes in the "link" serial port buffer
-      while (Serial.available() > 0)
-      {
+    } else {  // Flush all bytes in the "link" serial port buffer
+      while (Serial.available() > 0) {
         Serial.read();
       };
       data_ready = false;
