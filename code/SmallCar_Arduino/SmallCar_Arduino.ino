@@ -25,6 +25,8 @@ byte values = 0; // Variable to hold the pattern of which pins are currently tur
 // 74hc595 - led
 #define LED_LEFT_PIN_SR 5
 #define LED_RIGHT_PIN_SR 6
+// 74hc595 - buzzer
+#define BUZZER_PIN_SR 0
 
 // LN298N - Arduino
 #define LEFT_PWM_PIN 6
@@ -51,6 +53,8 @@ int turn_speed_diff = 60;
 
 long previousMillis_blink; // for led blink
 const int interval_blink = 200;
+long previousMillis_buzzer;
+const int interval_buzzer = 20;
 
 // char from softserial to control motor
 const String GO = "G";
@@ -79,8 +83,8 @@ float distance;
 
 // send data to esp8266
 const int interval_send_data = 10;
-long previousMillis_send_data; 
-StaticJsonDocument<200> sensor_json;  
+long previousMillis_send_data;
+StaticJsonDocument<200> sensor_json;
 
 // 74HC595N
 void shift_register_update()
@@ -342,13 +346,15 @@ void softserial_cmd()
   else if (inString.indexOf(RIGHT) != -1)
   {
     motor_cmd = MOTOR_RIGHT;
-  } else if (inString.indexOf(UP) != -1)
+  }
+  else if (inString.indexOf(UP) != -1)
   {
-      update_motor_speed(step_speed);
-  } else if (inString.indexOf(DOWN) != -1)
+    update_motor_speed(step_speed);
+  }
+  else if (inString.indexOf(DOWN) != -1)
   {
-      update_motor_speed(-step_speed);
-  };  
+    update_motor_speed(-step_speed);
+  };
   if (motor_cmd != motor_state)
   {
     motor_action(motor_cmd);
@@ -435,6 +441,24 @@ void led_blink()
   };
 }
 
+void buzzer_action()
+{
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis_buzzer >= interval_buzzer)
+  {
+    previousMillis_buzzer = currentMillis;
+    if (bitRead(values, 7 - BUZZER_PIN_SR) == 1)
+    {
+      bitClear(values, 7 - BUZZER_PIN_SR);
+    }
+    else if ((bitRead(values, 7 - BUZZER_PIN_SR) == 0))
+    {
+      bitSet(values, 7 - BUZZER_PIN_SR);
+    };
+    shift_register_update();
+  };
+}
+
 void setup()
 {
   Serial.begin(9600);
@@ -446,6 +470,7 @@ void setup()
 
   espSerial.begin(9600);
   previousMillis_send_data = 0;
+  previousMillis_buzzer = 0;
 };
 
 void loop()
@@ -470,10 +495,15 @@ void loop()
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis_send_data >= interval_send_data)
   {
-    previousMillis_send_data = currentMillis; 
+    previousMillis_send_data = currentMillis;
     sensor_json["distance"] = String(distance, 2);
     sensor_json["left_speed"] = String(lv, 2);
     sensor_json["right_speed"] = String(rv, 2);
     serializeJson(sensor_json, espSerial);
+  }
+
+  if (distance < 100 && motor_state == MOTOR_GO)
+  {
+    buzzer_action();
   }
 }
