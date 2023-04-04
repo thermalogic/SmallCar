@@ -5,7 +5,7 @@ The Small Car can be controlled with infrared and WIFI.
 ## ​Components
 
 * Arduino Pro Mini x1
-* ESP8266(ESP-01S) x1
+* ESP8266-01S x1
 * Shift Register：74HC595N  x1
 * Ultrasonic Sensor：HC-SR04 x1   
 * Motor Drive：L298N x1
