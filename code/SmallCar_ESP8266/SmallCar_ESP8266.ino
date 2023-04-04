@@ -22,7 +22,7 @@ ESP8266WebServer server(80);
 
 StaticJsonDocument<300> sensor_json;
 String json;
-bool data_ready;
+bool data_ready=false;
 
 const char webpage[] PROGMEM = R"=====(
 <!DOCTYPE html>
@@ -161,7 +161,6 @@ void setup()
 void loop()
 {
   server.handleClient();
-  data_ready = false;
   if (Serial.available())
   {
     DeserializationError err = deserializeJson(sensor_json, Serial);
@@ -180,6 +179,7 @@ void loop()
       {
         Serial.read();
       };
+      data_ready = false;
     }
   }
 }
