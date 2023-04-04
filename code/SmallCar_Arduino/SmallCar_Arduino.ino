@@ -58,6 +58,8 @@ const String STOP = "S";
 const String BACK = "B";
 const String LEFT = "L";
 const String RIGHT = "R";
+const String UP = "U";
+const String DOWN = "D";
 // softserial - Arduino
 #define SS_RX_PIN 10
 #define SS_TX_PIN 11
@@ -340,7 +342,13 @@ void softserial_cmd()
   else if (inString.indexOf(RIGHT) != -1)
   {
     motor_cmd = MOTOR_RIGHT;
-  };
+  } else if (inString.indexOf(UP) != -1)
+  {
+      update_motor_speed(step_speed);
+  } else if (inString.indexOf(DOWN) != -1)
+  {
+      update_motor_speed(-step_speed);
+  };  
   if (motor_cmd != motor_state)
   {
     motor_action(motor_cmd);
