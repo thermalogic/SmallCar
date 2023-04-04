@@ -141,7 +141,7 @@ void motor_turn_left()
   left_speed = right_speed - turn_speed_diff;
   if (left_speed < SPEED_MIN)
   {
-    left_speed = SPEED_MIN;
+    left_speed = 0;
   };
   analogWrite(LEFT_PWM_PIN, left_speed);
   bitSet(values, 7 - MOTOR_LEFT_FORWARD_PIN_SR);
@@ -161,7 +161,7 @@ void motor_turn_right()
   right_speed = left_speed - turn_speed_diff;
   if (right_speed < SPEED_MIN)
   {
-    right_speed = SPEED_MIN;
+    right_speed = 0;
   }
   analogWrite(RIGHT_PWM_PIN, right_speed);
   bitSet(values, 7 - MOTOR_RIGHT_FORWARD_PIN_SR);
