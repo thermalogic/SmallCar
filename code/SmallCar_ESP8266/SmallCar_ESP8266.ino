@@ -22,6 +22,7 @@ ESP8266WebServer server(80);
 
 StaticJsonDocument<300> sensor_json;
 String json;
+bool data_ready;
 
 const char webpage[] PROGMEM = R"=====(
 <!DOCTYPE html>
@@ -126,7 +127,11 @@ void handleMotor() {
 }
 
 void handleSensor() {
-  server.send(200, "text/json", json);
+  if (data_ready) {
+    server.send(200, "text/json", json);
+  } else {
+    server.send(503, "text/plane", "none data");
+  }
 }
 
 void setup() {
@@ -147,6 +152,7 @@ void setup() {
 
 void loop() {
   server.handleClient();
+  data_ready = false;
   if (Serial.available()) {
     DeserializationError err = deserializeJson(sensor_json, Serial);
     if (err == DeserializationError::Ok) {
@@ -155,15 +161,11 @@ void loop() {
       json += ", \"left_speed\":" + sensor_json["left_speed"].as<String>();
       json += ", \"right_speed\":" + sensor_json["right_speed"].as<String>();
       json += "}";
+      data_ready = true;
     } else {  // Flush all bytes in the "link" serial port buffer
       while (Serial.available() > 0) {
         Serial.read();
       };
-      json = "{";
-      json += "\"distance\":" + String(100);
-      json += ", \"left_speed\":" + String(101);
-      json += ", \"right_speed\":" + String(102);
-      json += "}";
     }
-  } 
+  }
 }
