@@ -6,6 +6,8 @@
 #include <ESP8266WebServer.h>
 #include <ArduinoJson.h>
 
+// #define CONFIG_DEBUG
+
 const char *ssid = "ESP8266-WIFI";
 const char *password = "12345678";
 
@@ -84,30 +86,38 @@ function getData() {
 </html>
 )=====";
 
-void handleRoot() {
+void handleRoot()
+{
   String s = webpage;
   server.send(200, "text/html", s);
 }
 
-void handleMotor() {
+void handleMotor()
+{
   String motor_cmd = server.arg("state");
   Serial.println(motor_cmd);
   server.send(200, "text/plane", motor_cmd);
 }
 
-void handleSensor() {
-  if (data_ready) {
+void handleSensor()
+{
+  if (data_ready)
+  {
     server.send(200, "text/json", json);
-  } else {
+  }
+  else
+  {
     server.send(503, "text/plane", "none data");
   }
 }
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
+#ifdef CONFIG_DEBUG
   Serial.println();
   Serial.println("Configuring access point...");
-
+#endif
   WiFi.softAP(ssid, password);
   WiFi.softAPConfig(ip, gateway, subnet);
 
@@ -115,23 +125,30 @@ void setup() {
   server.on("/motor_set", handleMotor);
   server.on("/data_read", handleSensor);
   server.begin();
-
+#ifdef CONFIG_DEBUG
   Serial.println("HTTP server started");
+#endif
 }
 
-void loop() {
+void loop()
+{
   server.handleClient();
-  if (Serial.available()) {
+  if (Serial.available())
+  {
     DeserializationError err = deserializeJson(sensor_json, Serial);
-    if (err == DeserializationError::Ok) {
+    if (err == DeserializationError::Ok)
+    {
       json = "{";
       json += "\"distance\":" + sensor_json["distance"].as<String>();
       json += ", \"left_speed\":" + sensor_json["left_speed"].as<String>();
       json += ", \"right_speed\":" + sensor_json["right_speed"].as<String>();
       json += "}";
       data_ready = true;
-    } else {  // Flush all bytes in the "link" serial port buffer
-      while (Serial.available() > 0) {
+    }
+    else
+    { // Flush all bytes in the "link" serial port buffer
+      while (Serial.available() > 0)
+      {
         Serial.read();
       };
       data_ready = false;
