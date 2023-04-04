@@ -36,7 +36,7 @@ const char webpage[] PROGMEM = R"=====(
 <p><button class="button" onclick="send('G')">Go</button></p>
 <p><button class="button" onclick="send('S')">STOP</button></p>
 <p><button class="button" onclick="send('B')">BACK</button></p>
-<p><button class="button"  onclick="send('L')">Turn Left</button></p>
+<p><button class="button" onclick="send('L')">Turn Left</button></p>
 <p><button class="button" onclick="send('R')">Turn Right</button></p>
 <p><button class="button" onclick="send('U')">Speed Up</button></p>
 <p><button class="button" onclick="send('D')">Speed Down</button></p>
