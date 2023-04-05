@@ -456,9 +456,9 @@ void buzzer_action()
 
 void setup()
 {
+  shift_register_init();
   Serial.begin(9600);
 
-  shift_register_init();
   motor_init();
   irremote_init();
   ultrasonic_init();
