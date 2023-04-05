@@ -53,9 +53,9 @@ char motor_cmd = MOTOR_STOP;
 
 // PWM - speed
 int step_speed = 10;
-int left_speed = 130;
-int right_speed = 135;
-int turn_speed_diff = 60;
+int left_speed = 180;
+int right_speed = 185;
+int turn_speed_diff = 100;
 
 long previousMillis_blink; // for led blink
 const int interval_blink = 200;
