@@ -258,30 +258,32 @@ void irremote_cmd() {
     Serial.println();
 #endif
     IrReceiver.resume();  // Enable receiving of the next value
-    switch (IrReceiver.decodedIRData.command) {
-      case IR_GO:
-        motor_cmd = MOTOR_GO;
-        break;
-      case IR_LEFT:
-        motor_cmd = MOTOR_LEFT;
-        break;
-      case IR_RIGHT:
-        motor_cmd = MOTOR_RIGHT;
-        break;
-      case IR_BACK:
-        motor_cmd = MOTOR_BACK;
-        break;
-      case IR_STOP:
-        motor_cmd = MOTOR_STOP;
-        break;
-      case IR_UP:
-        update_motor_speed(step_speed);
-        break;
-      case IR_DOWN:
-        update_motor_speed(-step_speed);
-        break;
-      default:
-        break;
+    if (IrReceiver.decodedIRData.protocol != UNKNOWN) {
+      switch (IrReceiver.decodedIRData.command) {
+        case IR_GO:
+          motor_cmd = MOTOR_GO;
+          break;
+        case IR_LEFT:
+          motor_cmd = MOTOR_LEFT;
+          break;
+        case IR_RIGHT:
+          motor_cmd = MOTOR_RIGHT;
+          break;
+        case IR_BACK:
+          motor_cmd = MOTOR_BACK;
+          break;
+        case IR_STOP:
+          motor_cmd = MOTOR_STOP;
+          break;
+        case IR_UP:
+          update_motor_speed(step_speed);
+          break;
+        case IR_DOWN:
+          update_motor_speed(-step_speed);
+          break;
+        default:
+          break;
+      };
     };
     if (motor_cmd != motor_state) {
       motor_action(motor_cmd);
