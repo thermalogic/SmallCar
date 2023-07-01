@@ -21,7 +21,7 @@ The Small Car can be controlled with infrared and WIFI.
 * Power: 7.4V 800mAh Lithium Battery x1
 * Mini Breadboard x2
 * Connecting Wires and Jumper Wires
-* [21 Keys MP3 IR Remote Controller x1](https://kzyeducabot.en.made-in-china.com/product/sNuEFmJvAkcM/China-21-Keys-Remote-Controller-MP3-Decording-Board-IR-Remoter-Control.html)
+* [21 Keys Mini IR Remote Controller x1](https://kzyeducabot.en.made-in-china.com/product/sNuEFmJvAkcM/China-21-Keys-Remote-Controller-MP3-Decording-Board-IR-Remoter-Control.html)
 
 
 ![](img/small_car.jpg)

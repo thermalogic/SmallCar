@@ -21,7 +21,7 @@
 
 byte values = 0;  // Variable to hold the pattern of which pins are currently turned HIGH or LOW
 
-#define IR_GO 0x18  // IR Remote Controller: 21 Keys MP3 with white panel
+#define IR_GO 0x18  // IR Remote Controller: 21 Keys with white panel
 #define IR_LEFT 0x8
 #define IR_RIGHT 0x5A
 #define IR_STOP 0x1C
