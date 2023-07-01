@@ -9,7 +9,9 @@ The Small Car can be controlled with infrared and WIFI.
 * Shift Register：74HC595N  x1
 * Ultrasonic Sensor：HC-SR04 x1   
 * Motor Drive：L298N x1
-* IR Receiver： VS1838B x1
+* IR Receiver and Remote  
+  * Receiver：VS1838B x1
+  * Remote: [21 Keys](https://hobbycomponents.com/wired-wireless/464-low-profile-21-button-infrared-ir-remote)  x1
 * Speed Detection 
   * Encoder Wheel x2
   * H206 Optical Interrupter Sensor x2
@@ -21,7 +23,6 @@ The Small Car can be controlled with infrared and WIFI.
 * Power: 7.4V 800mAh Lithium Battery x1
 * Mini Breadboard x2
 * Connecting Wires and Jumper Wires
-* [21 Keys Mini IR Remote Controller x1](https://kzyeducabot.en.made-in-china.com/product/sNuEFmJvAkcM/China-21-Keys-Remote-Controller-MP3-Decording-Board-IR-Remoter-Control.html)
 
 
 ![](img/small_car.jpg)
